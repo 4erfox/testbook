@@ -1,9 +1,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // Это позволит сайту работать на GitHub Pages в папке /testbook/
-  // А на Vercel он будет работать в корне (Vercel сам это умеет)
-  base: '/testbook/', 
+  base: './', // Использование относительных путей — самый надежный способ для работы и в Vercel, и в GitHub Pages
   build: {
     outDir: 'dist',
   }
