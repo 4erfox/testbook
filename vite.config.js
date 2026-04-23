@@ -1,5 +1,13 @@
 // vite.config.js
 import { defineConfig } from 'vite';
+export default defineConfig({
+  // Это позволит сайту работать в папке /testbook/ на GitHub Pages
+  // и в корне / на Vercel (он игнорирует base или ставит свой)
+  base: process.env.NODE_ENV === 'production' ? '/testbook/' : '/',
+  build: {
+    outDir: 'dist',
+  }
+})
 import path from 'path';
 
 export default defineConfig({
