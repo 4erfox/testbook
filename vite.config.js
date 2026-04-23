@@ -1,8 +1,4 @@
-import { defineConfig } from 'vite'
-
-export default defineConfig({
-  base: './', // Использование относительных путей — самый надежный способ для работы и в Vercel, и в GitHub Pages
-  build: {
-    outDir: 'dist',
-  }
-})
+{
+  "buildCommand": "rm -rf node_modules && npm install && npm run build",
+  "outputDirectory": "dist"
+}
