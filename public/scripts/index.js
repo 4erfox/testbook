@@ -78,36 +78,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 3. ЗАГРУЗКА НАСТРОЕК САЙТА
-    async function loadConfig() {
-        try {
-            const token = localStorage.getItem('adm_jwt');
-            const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-            const res = await fetch('/api/config', { headers });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    // Замени существующую функцию loadConfig на эту:
+async function loadConfig() {
+    try {
+        // Пытаемся загрузить с локального API (только если сервер запущен)
+        const res = await fetch('/api/config');
+        if (res.ok) {
             const data = await res.json();
             const config = data.config || {};
             localStorage.setItem('siteConfig', JSON.stringify(config));
             applyConfig(config);
-        } catch {
-            const savedConfig = localStorage.getItem('siteConfig');
-            if (savedConfig) {
-                try { applyConfig(JSON.parse(savedConfig)); } catch {}
-            }
+            return;
         }
+    } catch {
+        // API недоступен (GitHub Pages) — читаем из JSON файла
     }
-
-    function applyConfig(config) {
-        const mainTitle = document.querySelector('.hero h1');
-        if (mainTitle && config.siteTitle) {
-            mainTitle.textContent = config.siteTitle;
-            document.title = config.siteTitle;
+    
+    try {
+        const res = await fetch('/data/site-config.json?t=' + Date.now());
+        if (res.ok) {
+            const config = await res.json();
+            applyConfig(config);
+            return;
         }
-        const subTitle = document.querySelector('.subtitle');
-        if (subTitle && config.siteDescription) {
-            subTitle.textContent = config.siteDescription;
-        }
+    } catch {
+        // fallback
     }
-
+    
+    // Если ничего не загрузилось — используем дефолтные значения
+    applyConfig({
+        siteTitle: 'Деловой этикет в Казахстане',
+        siteDescription: 'Введение в профессиональную культуру'
+    });
+}
+  
     // 4. ЗАГРУЗКА МЕНЮ ИЗ nav.json
     async function loadNav() {
         try {
