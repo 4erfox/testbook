@@ -3,7 +3,7 @@ import path from 'path';
 
 export default defineConfig({
   // ЗАМЕНИ НА НАЗВАНИЕ СВОЕГО РЕПОЗИТОРИЯ!
-  base: '/НАЗВАНИЕ-РЕПОЗИТОРИЯ/',  // например: '/etiquette-book/'
+  base: '/testbook/',  // например: '/etiquette-book/'
 
   server: {
     port: 3000,
